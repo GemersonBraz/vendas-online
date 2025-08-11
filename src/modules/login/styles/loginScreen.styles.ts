@@ -34,6 +34,7 @@ export const ContainerLogin = styled.div`
     right: 0;
     top: 0;
     z-index: 1;
+    
 
 `;
 
@@ -43,4 +44,5 @@ export const LimitedContainer = styled.div`
     background-color: #3e4d8fff;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 `;
