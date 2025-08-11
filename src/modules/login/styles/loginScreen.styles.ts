@@ -4,7 +4,6 @@ export const ContainerLoginScreen = styled.div`
 width: 100%;
 display: flex;
 justify-content: right;
-
 `;
 
 export const BackgroundImage = styled.img`
@@ -18,9 +17,13 @@ export const BackgroundImage = styled.img`
 `;
 
 export const LogoImage = styled.img`
-    width: 50%;
-    
+    width: 202px;    
 `;
+
+export const TitleLogin = styled.h1`
+    color: #003796;
+`;
+
 export const ContainerLogin = styled.div` 
     display: flex;
     align-items: center;
@@ -33,16 +36,14 @@ export const ContainerLogin = styled.div`
     position: absolute;
     right: 0;
     top: 0;
-    z-index: 1;
-    
-
+    z-index: 1;    
 `;
 
 export const LimitedContainer = styled.div`    
     width: 100%;
     max-width: 498px;   
-    background-color: #3e4d8fff;
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
 `;
