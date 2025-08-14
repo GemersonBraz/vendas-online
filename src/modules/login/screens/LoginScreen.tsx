@@ -3,16 +3,17 @@ import { BackgroundImage, ContainerLogin, LimitedContainer, LogoImage, TitleLogi
 import { ContainerLoginScreen } from '../styles/loginScreen.styles';
 import Input from '../../../shared/inputs/input/Input';
 import Button from '../../../shared/buttons/button/Button';
+import axios from 'axios';
 
 
 const LoginScreen = () => {
 
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         // lógica para lidar com o nome de usuário
-        setUsername(event.target.value);
+        setEmail(event.target.value);
     };
 
     const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,12 +21,30 @@ const LoginScreen = () => {
         setPassword(event.target.value);
     }
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         // lógica para lidar com o login
-        alert(`Usuário: ${username}`);
-        alert(`Senha: ${password}`); // Apenas para demonstração, não faça isso em produção 
+        // Envia uma requisição POST
+        const returnObject = await axios({
+            method: "post",
+            url: "http://localhost:8080/auth",
+            data: {
+                email: email,
+                password: password,
+            },
+        })
+            .then((result) => {
+                alert(`Usuário: ${email} logado com sucesso!`);
+                return result.data;
+            })
+            .catch(() => {
+                alert('Usuário ou senha inválidos!');
+
+            });
+
         // Aqui você pode chamar uma função de autenticação ou redirecionar o usuário
-        console.log('Login realizado com sucesso!');
+        console.log('returnObject', returnObject);
+
+
         // Redirecionar ou realizar outras ações após o login
     };
 
@@ -39,7 +58,7 @@ const LoginScreen = () => {
 
                     <LogoImage src="./logo.png" />
                     <TitleLogin >LOGIN</TitleLogin>
-                    <Input title="Usuario" margin="32px 0px 0px 0px" onChange={(handleUsername)} value={username} />
+                    <Input title="Usuario" margin="32px 0px 0px 0px" onChange={(handleEmail)} value={email} />
                     <Input type='password' title="Senha" margin="32px 0px 0px 0px" onChange={(handlePassword)} value={password} />
                     <Button type="primary" margin="64px 0px 16px 0px" onClick={(handleLogin)}>ENTRAR</Button>
 
