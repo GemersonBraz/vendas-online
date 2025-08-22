@@ -28,21 +28,22 @@ const LoginScreen = () => {
             method: "post",
             url: "http://localhost:8080/auth",
             data: {
-                email: email,
-                password: password,
+                email: "root@root.com",
+                password: "abc",
             },
         })
             .then((result) => {
-                alert(`Usuário: ${email} logado com sucesso!`);
+                alert(`Login realizado com sucesso! Email: ${email}, Senha: ${result.data.accessToken}`);
                 return result.data;
             })
-            .catch(() => {
-                alert('Usuário ou senha inválidos!');
-
+            .catch((error) => {
+                console.error('Erro ao realizar o login:', error);
+                alert('Usuario ou senha invalido.');
             });
+        console.log('returnObject', returnObject);
+        // Exemplo de retorno de objeto
 
         // Aqui você pode chamar uma função de autenticação ou redirecionar o usuário
-        console.log('returnObject', returnObject);
 
 
         // Redirecionar ou realizar outras ações após o login
