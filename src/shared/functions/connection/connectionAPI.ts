@@ -15,13 +15,14 @@ export default class ConnectionAPI {
             case MethodsEnum.PUT:
                 return (await axios.put<T>(url, body)).data;
             case MethodsEnum.PATCH:
+            default:
                 return (await axios.patch<T>(url, body)).data;
 
         }
     }
 
-    static async connect(url: string, method: string, body?: unknown) {
-        return ConnectionAPI.call(url, method, body).catch((error) => {
+    static async connect<T>(url: string, method: string, body?: unknown): Promise<T> {
+        return ConnectionAPI.call<T>(url, method, body).catch((error) => {
             if (error.response) {
                 switch (error.response.status) {
                     case 400:
@@ -38,22 +39,23 @@ export default class ConnectionAPI {
                         throw new Error(ERROR_UNEXPECTED);
                 }
             }
+            throw new Error(ERROR_UNEXPECTED);
         });
     }
 }
 
-export const ConnectionAPIGet = async <T>(url: string) => {
+export const ConnectionAPIGet = async <T>(url: string): Promise<T> => {
     return ConnectionAPI.connect(url, MethodsEnum.GET);
 };
-export const ConnectionAPIDelete = async <T>(url: string) => {
+export const ConnectionAPIDelete = async <T>(url: string): Promise<T> => {
     return ConnectionAPI.connect(url, MethodsEnum.DELETE);
 };
-export const ConnectionAPIPut = async <T>(url: string, body: unknown) => {
+export const ConnectionAPIPut = async <T>(url: string, body: unknown): Promise<T> => {
     return ConnectionAPI.connect(url, MethodsEnum.PUT, body);
 };
-export const ConnectionAPIPost = async <T>(url: string, body: unknown) => {
+export const ConnectionAPIPost = async <T>(url: string, body: unknown): Promise<T> => {
     return ConnectionAPI.connect(url, MethodsEnum.POST, body);
 };
-export const ConnectionAPIPatch = async <T>(url: string, body: unknown) => {
+export const ConnectionAPIPatch = async <T>(url: string, body: unknown): Promise<T> => {
     return ConnectionAPI.connect(url, MethodsEnum.PATCH, body);
 };
