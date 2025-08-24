@@ -5,12 +5,10 @@ import Input from '../../../shared/components/inputs/input/Input';
 import Button from '../../../shared/components/buttons/button/Button';
 import SVGHome from '../../../shared/components/icons/SVGHome';
 import { useRequests } from '../../../shared/hooks/useRequests';
-import { useGlobalContext } from '../../../shared/hooks/useGlobalContext';
 import type { UserType } from '../types/UserType';
 
 
 const LoginScreen = () => {
-    const { accessToken, setAccessToken } = useGlobalContext();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { postRequest, loading } = useRequests();
@@ -25,14 +23,14 @@ const LoginScreen = () => {
         setPassword(event.target.value);
     }
 
-    const handleLogin = async () => {
+    const handleLogin = () => {
 
-        const user = await postRequest<UserType>("http://localhost:8080/auth", {
+        postRequest<UserType>("http://localhost:8080/auth", {
             email: email,
             password: password,
         });
 
-        setAccessToken(user?.accessToken || '');
+
 
     };
 
@@ -47,7 +45,7 @@ const LoginScreen = () => {
                     <SVGHome width={100} />
                     <TitleLogin >
                         LOGIN
-                        ({accessToken})
+                        ()
                     </TitleLogin>
                     <Input title="Usuario" margin="32px 0px 0px 0px" onChange={(handleEmail)} value={email} />
                     <Input type='password' title="Senha" margin="32px 0px 0px 0px" onChange={(handlePassword)} value={password} />
