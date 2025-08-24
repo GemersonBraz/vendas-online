@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { BackgroundImage, ContainerLogin, LimitedContainer, TitleLogin } from '../styles/loginScreen.styles';
 import { ContainerLoginScreen } from '../styles/loginScreen.styles';
-import Input from '../../../shared/inputs/input/Input';
-import Button from '../../../shared/buttons/button/Button';
-import axios from 'axios';
-import SVGHome from '../../../shared/icons/SVGHome';
+import Input from '../../../shared/components/inputs/input/Input';
+import Button from '../../../shared/components/buttons/button/Button';
+import SVGHome from '../../../shared/components/icons/SVGHome';
+import { useRequests } from '../../../shared/hooks/useRequests';
+import { useGlobalContext } from '../../../shared/hooks/useGlobalContext';
 
 
 const LoginScreen = () => {
-
+    const { acccessToken, setAccessToken } = useGlobalContext();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { postRequest, loading } = useRequests();
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         // lógica para lidar com o nome de usuário
@@ -24,30 +26,13 @@ const LoginScreen = () => {
 
     const handleLogin = async () => {
         // lógica para lidar com o login
-        // Envia uma requisição POST
-        const returnObject = await axios({
-            method: "post",
-            url: "http://localhost:8080/auth",
-            data: {
-                email: "root@root.com",
-                password: "abc",
-            },
-        })
-            .then((result) => {
-                alert(`Login realizado com sucesso! Email: ${email}, Senha: ${result.data.accessToken}`);
-                return result.data;
-            })
-            .catch((error) => {
-                console.error('Erro ao realizar o login:', error);
-                alert('Usuario ou senha invalido.');
-            });
-        console.log('returnObject', returnObject);
-        // Exemplo de retorno de objeto
+        // fazendo postRequest de login por meio do hook useRequests
+        setAccessToken('novo token');
+        postRequest("http://localhost:8080/auth", {
+            email: email,
+            password: password,
+        });
 
-        // Aqui você pode chamar uma função de autenticação ou redirecionar o usuário
-
-
-        // Redirecionar ou realizar outras ações após o login
     };
 
 
@@ -59,10 +44,13 @@ const LoginScreen = () => {
                 <LimitedContainer>
 
                     <SVGHome width={100} />
-                    <TitleLogin >LOGIN</TitleLogin>
+                    <TitleLogin >
+                        LOGIN
+                        ({acccessToken})
+                    </TitleLogin>
                     <Input title="Usuario" margin="32px 0px 0px 0px" onChange={(handleEmail)} value={email} />
                     <Input type='password' title="Senha" margin="32px 0px 0px 0px" onChange={(handlePassword)} value={password} />
-                    <Button type="primary" margin="64px 0px 16px 0px" onClick={(handleLogin)}>ENTRAR</Button>
+                    <Button loading={loading} type="primary" margin="64px 0px 16px 0px" onClick={(handleLogin)}>ENTRAR</Button>
 
                 </LimitedContainer>
 
