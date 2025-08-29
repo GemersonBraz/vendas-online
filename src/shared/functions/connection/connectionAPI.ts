@@ -1,22 +1,33 @@
+import type { AxiosRequestConfig } from "axios";
 import axios from "axios";
 
 import { MethodsEnum } from "../../enums/methods.enum";
 import { ERROR_ACCESS_DENIED, ERROR_UNAUTHORIZED, ERROR_NOT_FOUND, ERROR_INTERNAL_SERVER, ERROR_UNEXPECTED } from "../../constants/erroStatus";
+import { getAuthorizationToken } from "./auth";
 
 export default class ConnectionAPI {
     static async call<T>(url: string, method: string, body?: unknown) {
+
+        const config: AxiosRequestConfig = {
+            headers: {
+                Authorization: getAuthorizationToken(),
+                'Content-Type': 'application/json',
+            },
+
+        };
+
         switch (method) {
             case MethodsEnum.GET:
-                return (await axios.get<T>(url)).data;
+                return (await axios.get<T>(url, config)).data;
             case MethodsEnum.DELETE:
-                return (await axios.delete<T>(url)).data;
+                return (await axios.delete<T>(url, config)).data;
             case MethodsEnum.POST:
-                return (await axios.post<T>(url, body)).data;
+                return (await axios.post<T>(url, body, config)).data;
             case MethodsEnum.PUT:
-                return (await axios.put<T>(url, body)).data;
+                return (await axios.put<T>(url, body, config)).data;
             case MethodsEnum.PATCH:
             default:
-                return (await axios.patch<T>(url, body)).data;
+                return (await axios.patch<T>(url, body, config)).data;
 
         }
     }

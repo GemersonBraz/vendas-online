@@ -7,3 +7,4 @@ export const ERROR_UNAUTHORIZED = 'Não autorizado. Verifique suas credenciais.'
 export const ERROR_UNEXPECTED = 'Erro inesperado. Tente novamente mais tarde.';
 export const ERROR_TIMEOUT = 'Tempo de requisição esgotado. Tente novamente mais tarde'
 export const ERROR_CONNECTION = 'Erro de rede. Verifique sua conexão com a internet.';
+export const ERROR_INVALID_PASSWORD = 'Usuario ou senha inválidos.';

@@ -2,12 +2,20 @@ import axios from "axios";
 import { useState } from 'react';
 import { useGlobalContext } from "./useGlobalContext";
 import { ConnectionAPIPost } from "../functions/connection/connectionAPI";
+import { URL_AUTH } from "../constants/urls";
+import { ERROR_INVALID_PASSWORD } from "../constants/erroStatus"
+import { useNavigate } from "react-router";
+import { ProductRoutes } from "../../modules/product/routes"
+import { setAuthorizationToken } from "../functions/connection/auth";
+import type { AuthType } from "../../modules/login/types/AuthType";
+
 
 
 
 export const useRequests = () => {
     const [loading, setLoading] = useState(false);
-    const { setNotification } = useGlobalContext();
+    const navigate = useNavigate();
+    const { setNotification, setUser } = useGlobalContext();
 
     const getRequest = async (url: string) => {
 
@@ -25,22 +33,25 @@ export const useRequests = () => {
             });
     };
 
-    const postRequest = async <T>(url: string, body: unknown): Promise<T | undefined> => {
+    const authRequest = async (body: unknown): Promise<void> => {
         setLoading(true);
 
-        const returnData = await ConnectionAPIPost<T>(url, body)
+        await ConnectionAPIPost<AuthType>(URL_AUTH, body)
             .then((result) => {
-                setNotification('logado com sucesso', 'success');
+                setUser(result.user);
+                setAuthorizationToken(result.accessToken);
+                navigate(ProductRoutes.PRODUCT);
+
                 return result;
             })
-            .catch((error: Error) => {
-                setNotification(error.message, 'error');
+            .catch(() => {
+                setNotification(ERROR_INVALID_PASSWORD, 'error');
                 return undefined;
             });
         setLoading(false);
-        return returnData;
+
     };
 
-    return { loading, getRequest, postRequest };
+    return { loading, getRequest, authRequest };
 };
 

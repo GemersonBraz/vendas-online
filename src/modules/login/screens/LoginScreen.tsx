@@ -5,13 +5,12 @@ import Input from '../../../shared/components/inputs/input/Input';
 import Button from '../../../shared/components/buttons/button/Button';
 import SVGHome from '../../../shared/components/icons/SVGHome';
 import { useRequests } from '../../../shared/hooks/useRequests';
-import type { UserType } from '../types/UserType';
 
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { postRequest, loading } = useRequests();
+    const { authRequest, loading } = useRequests();
 
     const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         // lógica para lidar com o nome de usuário
@@ -25,7 +24,7 @@ const LoginScreen = () => {
 
     const handleLogin = () => {
 
-        postRequest<UserType>("http://localhost:8080/auth", {
+        authRequest({
             email: email,
             password: password,
         });
