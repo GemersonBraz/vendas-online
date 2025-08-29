@@ -1,13 +1,16 @@
-import axios from "axios";
+
 import { useState } from 'react';
+import { useNavigate } from "react-router";
 import { useGlobalContext } from "./useGlobalContext";
-import { ConnectionAPIPost } from "../functions/connection/connectionAPI";
 import { URL_AUTH } from "../constants/urls";
 import { ERROR_INVALID_PASSWORD } from "../constants/erroStatus"
-import { useNavigate } from "react-router";
-import { ProductRoutes } from "../../modules/product/routes"
 import { setAuthorizationToken } from "../functions/connection/auth";
+import { ProductRoutes } from "../../modules/product/routes"
+import { ConnectionAPIPost } from '../functions/connection/connectionAPI';
 import type { AuthType } from "../../modules/login/types/AuthType";
+import type { MethodType } from '../functions/connection/connectionAPI';
+import ConnectionAPI from '../functions/connection/connectionAPI';
+
 
 
 
@@ -17,20 +20,28 @@ export const useRequests = () => {
     const navigate = useNavigate();
     const { setNotification, setUser } = useGlobalContext();
 
-    const getRequest = async (url: string) => {
+    const request = async <T>(
+        url: string,
+        method: MethodType,
+        saveGlobal?: (object: T) => void,
+        body?: unknown,
+    ): Promise<T | undefined> => {
 
         setLoading(true);
 
-        return await axios({
-            method: "get",
-            url: url,
-        })
+        const returnObject: T | undefined = await ConnectionAPI.connect<T>(url, method, body)
             .then((result) => {
-                return result.data;
+                if (saveGlobal) {
+                    saveGlobal(result);
+                }
+                return result;
             })
-            .catch(() => {
-                alert('Erro.');
+            .catch((error: Error) => {
+                setNotification(error.message, 'error');
+                return undefined;
             });
+        setLoading(false);
+        return returnObject;
     };
 
     const authRequest = async (body: unknown): Promise<void> => {
@@ -52,6 +63,11 @@ export const useRequests = () => {
 
     };
 
-    return { loading, getRequest, authRequest };
+    return {
+        loading,
+        authRequest,
+        request,
+        //aquitinha um postRequest, apaguei tava dando erro.
+    };
 };
 

@@ -1,11 +1,11 @@
 
 
 export const MethodsEnum = {
-    GET: "GET",
-    POST: "POST",
-    PUT: "PUT",
-    DELETE: "DELETE",
-    PATCH: "PATCH",
+    GET: "get",
+    POST: "post",
+    PUT: "put",
+    DELETE: "delete",
+    PATCH: "patch",
 } as const;
 
 // Tipo para uso nos métodos
