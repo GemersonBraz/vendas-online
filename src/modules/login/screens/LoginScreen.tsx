@@ -44,7 +44,6 @@ const LoginScreen = () => {
                     <SVGHome width={100} />
                     <TitleLogin >
                         LOGIN
-                        ()
                     </TitleLogin>
                     <Input title="Usuario" margin="32px 0px 0px 0px" onChange={(handleEmail)} value={email} />
                     <Input type='password' title="Senha" margin="32px 0px 0px 0px" onChange={(handlePassword)} value={password} />

@@ -1,6 +1,5 @@
 import type { AxiosRequestConfig } from "axios";
 import axios from "axios";
-
 import { MethodsEnum } from "../../enums/methods.enum";
 import { ERROR_ACCESS_DENIED, ERROR_UNAUTHORIZED, ERROR_NOT_FOUND, ERROR_INTERNAL_SERVER, ERROR_UNEXPECTED } from "../../constants/erroStatus";
 import { getAuthorizationToken } from "./auth";
@@ -14,7 +13,7 @@ export default class ConnectionAPI {
             headers: {
                 Authorization: getAuthorizationToken(),
                 'Content-Type': 'application/json',
-            },
+            }
 
         };
 

@@ -34,6 +34,6 @@ export const verifyLoggedIn = async (user?: UserType, setUser?: (user?: UserType
                 location.href = '/login';
             });
     }
-    alert('Entrou');
+    //alert('Entrou');
     return null;
 };
