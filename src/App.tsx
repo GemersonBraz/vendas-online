@@ -8,19 +8,29 @@ import { firstScreenRoutes } from './modules/firstScreen/routes';
 import { productScreens } from './modules/product/routes';
 import { useGlobalContext } from './shared/hooks/useGlobalContext';
 import { verifyLoggedIn } from './shared/functions/connection/auth';
+import { useRequests } from './shared/hooks/useRequests';
+import { useEffect } from 'react';
+import { URL_USER } from './shared/constants/urls';
+import { MethodsEnum } from './shared/enums/methods.enum';
+
+
+const routes: RouteObject[] = [...loginRoutes];
+const routesLooggedIn: RouteObject[] = [...productScreens, ...firstScreenRoutes].map((route) => ({
+  ...route,
+  loader: verifyLoggedIn,
+}));
+
+// junta todas as rotas
+const router = createBrowserRouter([...routes, ...routesLooggedIn]);
 
 function App() {
   const { contextHolder } = useNotification();
-  const { user, setUser } = useGlobalContext();
+  const { setUser } = useGlobalContext();
+  const { request } = useRequests();
 
-  const routes: RouteObject[] = [...loginRoutes];
-  const routesLooggedIn: RouteObject[] = [...productScreens, ...firstScreenRoutes].map((route) => ({
-    ...route,
-    loader: () => verifyLoggedIn(user, setUser),
-  }));
-
-  // junta todas as rotas
-  const router = createBrowserRouter([...routes, ...routesLooggedIn]);
+  useEffect(() => {
+    request(URL_USER, MethodsEnum.GET, setUser)
+  }, [])
 
   return (
     <>

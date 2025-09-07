@@ -14,7 +14,7 @@ const FirstScreen = () => {
         if (user) {
             navigate(ProductRoutes.PRODUCT);
         }
-    }, []);
+    }, [user]);
 
     return <Spin />
 };
