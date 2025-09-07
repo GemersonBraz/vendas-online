@@ -5,9 +5,10 @@ import { useRequests } from "../../../shared/hooks/useRequests"
 import type { ProductType } from "../types/ProductType";
 import { MethodsEnum } from "../../../shared/enums/methods.enum";
 import { URL_PRODUCT } from "../../../shared/constants/urls";
+import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Space } from "antd";
-import { Table } from "antd";
+
 
 
 
